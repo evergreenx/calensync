@@ -1,8 +1,8 @@
 
 
 export const metadata = {
-  title: "Wribble - The best way to share your ideas",
-  description: "Wribble is the best way to share your ideas",
+  title: 'Calensync',
+  description: 'fix unnecessary discusion ',
 };
 
 export default function RootLayout({

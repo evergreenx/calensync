@@ -31,7 +31,7 @@ export default function Hero() {
           variants={container}
           initial="hidden"
           animate="show"
-          className="text-center font-display text-4xl font-semibold tracking-[-0.02em] drop-shadow-sm md:text-7xl md:leading-[5rem]"
+          className="text-center font-display text-3xl lg:text-4xl font-semibold tracking-[-0.02em] drop-shadow-sm md:text-7xl md:leading-[5rem]"
         >
           {words.split(" ").map((word, i) => (
             <motion.span
@@ -50,7 +50,7 @@ export default function Hero() {
         animate="visible"
         transition={{ duration: 1 }}
         variants={variants1}
-        className="text-base text-center text-gray-400"
+        className="lg:text-base text-sm text-center text-gray-400"
       >
         Introducing efficent way to organize your avaliblity with people .
         <br></br>
