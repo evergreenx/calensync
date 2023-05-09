@@ -57,7 +57,7 @@ const components: { title: string; href: string; description: string }[] = [
 export default function Header() {
   return (
 
-    <header className="flex justify-between py-2 items-center px-3">
+    <header className="flex justify-between py-2 items-center px-3 max-w-2xl">
 
     {/* logo area */}
 
