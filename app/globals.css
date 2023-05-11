@@ -82,3 +82,30 @@
   background-size: contain;
   background-position: right;
 }
+
+.signupbg {
+
+  background-image: url('./assets/signupbg.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: right;
+}
+
+
+@media only screen and (max-width: 600px) {
+  .signupbg-sm {
+    /* background-color: lightblue; */
+    background-image: url('./assets/signupbg.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: right;
+  }
+
+  .loginbg-sm{
+    background-image: url('./assets/bg.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: right;
+
+  }
+}

@@ -108,7 +108,7 @@ export default function Login() {
         initial="hidden"
         animate="visible"
         exit="exit"
-        className="loginbg flex flex-col w-full  justify-center gap-2"
+        className=" signupbg-sm flex flex-col w-full  justify-center gap-2"
       >
         <motion.form
           className=" flex flex-col justify-center gap-2 text-foreground"
@@ -117,8 +117,10 @@ export default function Login() {
           initial={{ opacity: 0 }} // Initial state (hidden)
           animate={{ opacity: 1 }} // Animation when it becomes visible
         >
-          <motion.h1 className="text-2xl font-bold mt-[20px]">Login</motion.h1>
-          <p className="text-base  text-gray-500 py-[10px]">Welcome back!</p>
+          <motion.h1 className="text-2xl font-bold mt-[20px]">Signup</motion.h1>
+          <p className="text-base  text-gray-500 py-[10px]">
+            Create your account with us!
+          </p>
           <motion.button
             variants={inputVariants}
             className="border rounded-full font-semibold lg:w-[400px] border-[#ddd] px-6 py-3 text-black mb-2 flex justify-center items-center space-x-3"
@@ -148,22 +150,22 @@ export default function Login() {
 
           <Messages />
 
-          <p className="  text-sm">
-            Dont have an account ?{" "}
-            <a className="text-blue-500" href="/signup">
-              Sign up
+          <p className="text-gray-500  text-sm">
+            Already have an account ?{" "}
+            <a className="text-blue-500" href="/login">
+              Login
             </a>
           </p>
         </motion.form>
       </motion.div>
 
       <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        className="loginbg hidden lg:block w-full h-full"
-      ></motion.div>
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      
+      className="signupbg hidden lg:block w-full h-full"></motion.div>
     </div>
   );
 }
