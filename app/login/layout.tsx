@@ -1,4 +1,4 @@
-import { Head } from "next/document";
+
 
 export const metadata = {
   title: "Wribble - The best way to share your ideas",
