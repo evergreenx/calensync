@@ -31,7 +31,7 @@ export default function Hero() {
           variants={container}
           initial="hidden"
           animate="show"
-          className="text-center font-display text-3xl lg:text-4xl font-semibold tracking-[-0.02em] drop-shadow-sm md:text-7xl md:leading-[5rem]"
+          className="text-center font-display text-3xl  font-semibold tracking-[-0.02em] drop-shadow-sm md:text-7xl md:leading-[5rem]"
         >
           {words.split(" ").map((word, i) => (
             <motion.span
