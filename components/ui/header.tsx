@@ -5,6 +5,9 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -55,11 +58,13 @@ const components: { title: string; href: string; description: string }[] = [
   },
 ];
 
-export default function Header() {
+export default function Header({ data }: any) {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 0.5, delay: 0.2 } },
   };
+
+  console.log(data);
   return (
     <motion.header
       initial="hidden"
@@ -68,9 +73,8 @@ export default function Header() {
       className="flex justify-between py-2 items-center px-3 mx-auto max-w-7xl"
     >
       {/* logo area */}
-
       <h1>logo</h1>
-      <NavigationMenu>
+      <NavigationMenu className="hidden lg:block">
         <NavigationMenuList>
           <NavigationMenuItem>
             <Link href="/" legacyBehavior passHref>
@@ -138,13 +142,26 @@ export default function Header() {
         </NavigationMenuList>
       </NavigationMenu>
 
-      <div className="right flex items-center  space-x-5">
-        <Link href={"/login"} className="text-sm">
-          Login
-        </Link>
+      {data?.session?.user && data?.session.user ? (
+        <Avatar>
+          <AvatarImage src={data.session.user?.user_metadata?.avatar_url} />
+          <AvatarFallback>
+            {data.session.user?.user_metadata?.name.substring(0, 2)}
+          </AvatarFallback>
+        </Avatar>
+      ) : (
+        <>
+          <div className="right flex items-center  space-x-5">
+            <Link href={"/login"} className="text-sm">
+              Login
+            </Link>
 
-        <Button className="rounded-full px-6 text-xs">Create account</Button>
-      </div>
+            <Button className="rounded-full px-6 text-xs">
+              Create account
+            </Button>
+          </div>
+        </>
+      )}
     </motion.header>
   );
 }
