@@ -53,7 +53,8 @@ export default function Hero() {
         className="lg:text-base text-sm text-center text-gray-400"
       >
         Introducing efficent way to organize your avaliblity with people .
-        <br></br>
+        
+        <br className="lg:block hidden"></br>
         Difference between time zone is no longer a problem,.
       </motion.h1>
 
