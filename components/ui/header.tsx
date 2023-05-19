@@ -142,26 +142,15 @@ export default function Header({ data }: any) {
         </NavigationMenuList>
       </NavigationMenu>
 
-      {data?.session?.user && data?.session.user ? (
-        <Avatar>
-          <AvatarImage src={data.session.user?.user_metadata?.avatar_url} />
-          <AvatarFallback>
-            {data.session.user?.user_metadata?.name.substring(0, 2)}
-          </AvatarFallback>
-        </Avatar>
-      ) : (
-        <>
-          <div className="right flex items-center  space-x-5">
-            <Link href={"/login"} className="text-sm">
-              Login
-            </Link>
+      <>
+        <div className="right flex items-center  space-x-5">
+          <Link href={"/login"} className="text-sm">
+            Login
+          </Link>
 
-            <Button className="rounded-full px-6 text-xs">
-              Create account
-            </Button>
-          </div>
-        </>
-      )}
+          <Button className="rounded-full px-6 text-xs">Create account</Button>
+        </div>
+      </>
     </motion.header>
   );
 }

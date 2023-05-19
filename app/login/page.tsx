@@ -9,6 +9,8 @@ import FigmaIcon from "@/app/assets/figma.svg";
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const containerVariants = {
   hidden: {
@@ -61,6 +63,22 @@ const inputVariants = {
 export default function Login() {
   const supabase = createClientComponentClient();
 
+  const [userData, setUserData] = useState<any>(null);
+
+  useEffect(() => {
+    const handleFetchUser = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      setUserData(session);
+    };
+
+    handleFetchUser();
+  }, []);
+
+  const router = useRouter();
+
   const handleSign = async () => {
     await supabase.auth.signInWithOAuth({
       provider: "github",
@@ -79,6 +97,12 @@ export default function Login() {
       },
     });
   };
+
+  console.log(userData);
+
+  if (userData) {
+    return router.push("/");
+  }
   return (
     <div className="flex w-full h-full">
       <motion.div

@@ -1,32 +1,25 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
-import Header from '@/components/ui/Index'
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import Header from "@/components/ui/Index";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Calensync',
-  description: 'fix unnecessary discusion ',
-}
+  title: "Calensync",
+  description: "fix unnecessary discusion ",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Header/>
-
-        <div className='max-w-5xl mx-auto p-10'>
-        {children}
-
-        </div>
- 
-   
-       </body>
+        <div className="max-w-7xl mx-auto p-10">{children}</div>
+      </body>
     </html>
-  )
+  );
 }
