@@ -1,30 +1,43 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { format } from "date-fns"
-import { Calendar as CalendarIcon } from "lucide-react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Calendar } from "@/components/ui/calendar"
+import Hero from "@/components/hero";
+import Header from "@/components/ui/header";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import Hero from "@/components/hero"
+  createClientComponentClient,
+  createServerComponentClient,
+} from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import { useRouter } from "next/navigation";
 
 export default function DatePickerDemo() {
-  const [date, setDate] = React.useState<Date>()
+  const supabase = createClientComponentClient<any>();
+
+  const [userData, setUserData] = React.useState<any>(null);
+
+  React.useEffect(() => {
+    const handleFetchUser = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      setUserData(session);
+    };
+
+    handleFetchUser();
+  }, []);
+
+  const router = useRouter();
+
+  if (userData) {
+    return router.push("/dashboard");
+  }
 
   return (
-
-
     <>
-    
-    <Hero />
-    
+      <Header />
+      <Hero />
     </>
-
-  )
+  );
 }
