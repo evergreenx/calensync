@@ -108,7 +108,7 @@ export default function Login() {
         initial="hidden"
         animate="visible"
         exit="exit"
-        className="loginbg flex flex-col w-full  justify-center gap-2"
+        className="loginbg-sm flex flex-col w-full  justify-center gap-2"
       >
         <motion.form
           className=" flex flex-col justify-center gap-2 text-foreground"
