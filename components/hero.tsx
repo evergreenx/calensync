@@ -58,9 +58,14 @@ export default function Hero() {
         Difference between time zone is no longer a problem,.
       </motion.h1>
 
-      <div className="create my-7 flex">
+      <motion.div className="create my-7 flex"
+          initial="hidden"
+          animate="visible"
+          transition={{ duration: 1 }}
+      variants={variants1}
+      >
         <Button className="rounded-full mx-auto p-6">Create a link</Button>
-      </div>
+      </motion.div>
     </>
   );
 }
