@@ -58,13 +58,11 @@ const components: { title: string; href: string; description: string }[] = [
   },
 ];
 
-export default function Header({ data }: any) {
+export default function Header( ) {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 0.5, delay: 0.2 } },
   };
-
-  console.log(data);
   return (
     <motion.header
       initial="hidden"
@@ -148,7 +146,13 @@ export default function Header({ data }: any) {
             Login
           </Link>
 
-          <Button className="rounded-full px-6 text-xs">Create account</Button>
+          <Button className="rounded-full px-6 text-xs">
+          <Link href={"/signup"} className="text-sm">
+            
+            Create account
+            
+            </Link>
+            </Button>
         </div>
       </>
     </motion.header>
