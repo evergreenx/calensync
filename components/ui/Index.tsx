@@ -23,7 +23,7 @@ async function Index() {
       {" "}
       {/* <HeaderClient data={data} /> */}
 
-      <HeaderClient data={data}/>
+      <HeaderClient/>
     </div>
   );
 }

@@ -160,12 +160,12 @@ export default function Login() {
       </motion.div>
 
       <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      exit="exit"
-      
-      className="signupbg hidden lg:block w-full h-full"></motion.div>
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        className="signupbg hidden lg:block w-full h-full"
+      ></motion.div>
     </div>
   );
 }

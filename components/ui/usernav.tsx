@@ -24,6 +24,7 @@ export async function UserNav() {
   const { data } = await supabase.auth.getUser();
 
   
+  console.log(data)
 
   return (
     <>
