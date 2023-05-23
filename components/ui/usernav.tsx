@@ -23,16 +23,13 @@ export async function UserNav() {
 
   const { data } = await supabase.auth.getUser();
 
-  
-  console.log(data)
-
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button className="relative h-8 w-8 rounded-full">
             <Avatar className="h-8 w-8">
-              <AvatarImage src={data.user?.user_metadata.avatar_url} />
+              <AvatarImage src={data?.user?.user_metadata.avatar_url} />
               <AvatarFallback>
                 {data.user?.user_metadata.name.substring(0,2)}
               </AvatarFallback>
