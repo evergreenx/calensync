@@ -18,7 +18,40 @@ import { Input } from "@/components/ui/input";
 import { Database } from "@/lib/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect } from "react";
+import { cn } from "@/lib/utils";
 
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Check, ChevronsUpDown } from "lucide-react";
+
+import TimezonesData from "@/data/timezones.json";
+import { Timezone } from "@/index";
+import React from "react";
+
+// import { toast } from "@/components/ui/use-toast"
+
+const languages = [
+  { label: "English", value: "en" },
+  { label: "French", value: "fr" },
+  { label: "German", value: "de" },
+  { label: "Spanish", value: "es" },
+  { label: "Portuguese", value: "pt" },
+  { label: "Russian", value: "ru" },
+  { label: "Japanese", value: "ja" },
+  { label: "Korean", value: "ko" },
+  { label: "Chinese", value: "zh" },
+] as const;
 const formSchema = z.object({
   username: z.string().min(2, {
     message: "Username must be at least 2 characters.",
@@ -26,6 +59,10 @@ const formSchema = z.object({
 
   name: z.string().min(4, {
     message: "name must be at least 4 characters.",
+  }),
+
+  timezone: z.string({
+    required_error: "Please select your timezone.",
   }),
 });
 
@@ -37,6 +74,8 @@ export function UpdateProfileForm({ data }: any) {
       //   name: ''
     },
   });
+
+  const [open, setOpen] = React.useState(false)
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
@@ -84,6 +123,70 @@ export function UpdateProfileForm({ data }: any) {
                 />
               </FormControl>
 
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="timezone"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>Timezone</FormLabel>
+              <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "w-full justify-between",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value
+                        ? TimezonesData.find(
+                            (timezone) => timezone.value === field.value
+                          )?.text
+                        : "Select timezone"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-[200px] p-0">
+                  <Command>
+                    <CommandInput placeholder="Search language..." />
+                    <CommandEmpty>No timezone found.</CommandEmpty>
+                    <CommandGroup>
+                      {TimezonesData.map((timezone: Timezone) => (
+                        <CommandItem
+                          value={timezone.value}
+                          key={timezone.text}
+                          onSelect={() => {
+                            form.setValue("timezone", timezone.value);
+                            setOpen(false)
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              timezone.value === field.value
+                                ? "opacity-100"
+                                : "opacity-0"
+                            )}
+                          />
+                          {timezone.text}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+              <FormDescription>
+                This is the timezone that will be applied to set up your
+                meetings
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
