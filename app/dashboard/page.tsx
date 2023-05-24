@@ -16,6 +16,8 @@ export default async function Page() {
   const supabase = createServerComponentClient<Database>({ cookies });
   const { data } = await supabase.from("profiles").select();
 
+  const { data:userData} = await supabase.auth.getSession()
+
   
 
   const handleNewUser  = (profiles:any ) => {
@@ -37,6 +39,7 @@ export default async function Page() {
       earum possimus.
       {handleNewUser(data) && (
         <UpdateProfileModal
+        data={userData}
           openState={handleNewUser(data)}
         ></UpdateProfileModal>
       )}

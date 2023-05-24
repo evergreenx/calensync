@@ -13,12 +13,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { UpdateProfileForm } from "./updateProfileForm";
+import { Database } from "@/lib/database.types";
 
 interface ModalType {
   openState: boolean | never[];
+  data: any
 }
 
-export function UpdateProfileModal({ openState }: ModalType) {
+export function UpdateProfileModal({ openState , data }: ModalType) {
   const [open, setOpen] = useState<any>(openState);
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
@@ -27,7 +29,7 @@ export function UpdateProfileModal({ openState }: ModalType) {
           <AlertDialogTitle>Update your profile?</AlertDialogTitle>
         </AlertDialogHeader>
 
-        <UpdateProfileForm />
+        <UpdateProfileForm data={data} />
         {/* <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction>Continue</AlertDialogAction>

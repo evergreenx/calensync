@@ -15,6 +15,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Database } from "@/lib/database.types";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -26,11 +29,12 @@ const formSchema = z.object({
   }),
 });
 
-export function UpdateProfileForm() {
+export function UpdateProfileForm({ data }: any) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      //   username: "",
+      //   name: ''
     },
   });
 
@@ -41,6 +45,10 @@ export function UpdateProfileForm() {
   }
   // ...
 
+  type user = Database["public"]["Tables"]["profiles"]["Row"];
+
+  const user: any = data.session.user.user_metadata;
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -50,8 +58,9 @@ export function UpdateProfileForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Username</FormLabel>
+
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input defaultValue={user?.user_name} {...field} />
               </FormControl>
               <FormDescription>
                 This is your public display name.
@@ -68,7 +77,11 @@ export function UpdateProfileForm() {
             <FormItem>
               <FormLabel>Full name</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input
+                  defaultValue={user?.full_name}
+                  placeholder="full name"
+                  {...field}
+                />
               </FormControl>
 
               <FormMessage />
