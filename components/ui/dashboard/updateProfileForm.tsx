@@ -38,6 +38,7 @@ import { Check, ChevronsUpDown } from "lucide-react";
 import TimezonesData from "@/data/timezones.json";
 import { Timezone } from "@/index";
 import React from "react";
+import { ScrollArea } from "../scroll-area";
 
 // import { toast } from "@/components/ui/use-toast"
 
@@ -154,9 +155,10 @@ export function UpdateProfileForm({ data }: any) {
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
+                <PopoverContent className="w-full h-[200px] p-0">
+                <ScrollArea className="h-full w-full rounded-md border">
                   <Command>
-                    <CommandInput placeholder="Search language..." />
+                    <CommandInput placeholder="Search timezones..." />
                     <CommandEmpty>No timezone found.</CommandEmpty>
                     <CommandGroup>
                       {TimezonesData.map((timezone: Timezone) => (
@@ -181,6 +183,7 @@ export function UpdateProfileForm({ data }: any) {
                       ))}
                     </CommandGroup>
                   </Command>
+                  </ScrollArea>
                 </PopoverContent>
               </Popover>
               <FormDescription>
