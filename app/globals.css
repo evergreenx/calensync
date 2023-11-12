@@ -72,9 +72,14 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-size: 16px;
   }
 }
 
+
+input[type="text"] {
+  font-size: inherit;
+}
 .loginbg {
   background-image: url("./assets/bg.png");
   background-repeat: no-repeat;
