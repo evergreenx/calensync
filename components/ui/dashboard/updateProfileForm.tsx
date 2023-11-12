@@ -156,7 +156,7 @@ export function UpdateProfileForm({ data }: any) {
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className="w-full h-[200px] p-0">
-                <ScrollArea className="h-full w-full rounded-md border">
+                <ScrollArea className="h-72 w-full rounded-md border">
                   <Command>
                     <CommandInput placeholder="Search timezones..." />
                     <CommandEmpty>No timezone found.</CommandEmpty>
