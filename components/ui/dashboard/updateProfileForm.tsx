@@ -42,17 +42,6 @@ import { ScrollArea } from "../scroll-area";
 
 // import { toast } from "@/components/ui/use-toast"
 
-const languages = [
-  { label: "English", value: "en" },
-  { label: "French", value: "fr" },
-  { label: "German", value: "de" },
-  { label: "Spanish", value: "es" },
-  { label: "Portuguese", value: "pt" },
-  { label: "Russian", value: "ru" },
-  { label: "Japanese", value: "ja" },
-  { label: "Korean", value: "ko" },
-  { label: "Chinese", value: "zh" },
-] as const;
 const formSchema = z.object({
   username: z.string().min(2, {
     message: "Username must be at least 2 characters.",
@@ -68,15 +57,20 @@ const formSchema = z.object({
 });
 
 export function UpdateProfileForm({ data }: any) {
+
+  const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       //   username: "",
       //   name: ''
+     
+      timezone:userTimezone
     },
   });
 
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
@@ -84,6 +78,13 @@ export function UpdateProfileForm({ data }: any) {
     console.log(values);
   }
   // ...
+
+  function getTimeZone() {
+    var offset = new Date().getTimezoneOffset(), o = Math.abs(offset);
+    return (offset < 0 ? "+" : "-") + ("00" + Math.floor(o / 60)).slice(-2) + ":" + ("00" + (o % 60)).slice(-2);
+}
+
+console.log(getTimeZone())
 
   type user = Database["public"]["Tables"]["profiles"]["Row"];
 
@@ -129,13 +130,30 @@ export function UpdateProfileForm({ data }: any) {
           )}
         />
 
+        <label
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 space-y-2 flex flex-col"
+          htmlFor=":rb:-form-item"
+        >
+          Email
+          <input
+            type="email"
+            placeholder="email"
+            defaultValue={user?.email}
+            disabled
+            className="flex mt-3 h-10 w-full rounded-md disabled:border disabled:border-input disabled:bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed "
+          />
+        </label>
+
         <FormField
           control={form.control}
           name="timezone"
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Timezone</FormLabel>
-              <Popover open={open} onOpenChange={setOpen}>
+              <Popover open={open} onOpenChange={setOpen}
+              
+              
+              >
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
@@ -156,34 +174,44 @@ export function UpdateProfileForm({ data }: any) {
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className="w-full h-[200px] p-0">
-                <ScrollArea className="h-full w-full rounded-md border">
-                  <Command>
-                    <CommandInput placeholder="Search timezones..." />
-                    <CommandEmpty>No timezone found.</CommandEmpty>
-                    <CommandGroup>
-                      {TimezonesData.map((timezone: Timezone) => (
-                        <CommandItem
-                          value={timezone.value}
-                          key={timezone.text}
-                          onSelect={() => {
-                            form.setValue("timezone", timezone.value);
-                            setOpen(false)
-                          }}
-                        >
-                          <Check
-                            className={cn(
-                              "mr-2 h-4 w-4",
-                              timezone.value === field.value
-                                ? "opacity-100"
-                                : "opacity-0"
-                            )}
-                          />
-                          {timezone.text}
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  </Command>
+        
+                    <Command
+                    defaultValue={'Europe/Dublin'}
+                    value={'Europe/Dublin'}
+
+                    
+                    >
+                      <CommandInput placeholder="Search timezones..." />
+
+                      <ScrollArea className="h-full w-full rounded-md border">
+                      <CommandEmpty>No timezone found.</CommandEmpty>
+                      <CommandGroup
+                      
+                      >
+                        {TimezonesData.map((timezone: Timezone) => (
+                          <CommandItem
+                            value={timezone.value}
+                            key={timezone.text}
+                            onSelect={() => {
+                              form.setValue("timezone", timezone.value);
+                              setOpen(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                timezone.value === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {timezone.text}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
                   </ScrollArea>
+
+                    </Command>
                 </PopoverContent>
               </Popover>
               <FormDescription>
