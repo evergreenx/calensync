@@ -16,8 +16,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Database } from "@/lib/database.types";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useEffect } from "react";
+import {
+  Session,
+  createClientComponentClient,
+} from "@supabase/auth-helpers-nextjs";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 import {
@@ -56,39 +59,62 @@ const formSchema = z.object({
   }),
 });
 
-export function UpdateProfileForm({ data }: any) {
-
+export function UpdateProfileForm({ session }: { session: Session }) {
+  // ge user timezone
   const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  const supabase = createClientComponentClient<Database>();
+
+  const [loading, setLoading] = useState(true);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       //   username: "",
       //   name: ''
-     
-      timezone:userTimezone
+
+      timezone: userTimezone,
     },
   });
 
   const [open, setOpen] = React.useState(false);
 
+  async function updateProfile( username : any) {
+    try {
+      setLoading(true);
+
+      const { error } = await supabase.from("profiles").update({
+        id: session.user.id,
+        username,
+        name: "",
+        is_new_user: false,
+        timezone: "",
+      }).eq('id' , session.user.id);
+      if (error) throw error;
+      alert("Profile updated!");
+    } catch (error) {
+      // alert("Error updating the data!");
+
+      console.log(error)
+    } finally {
+      setLoading(false);
+    }
+  }
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
+
+    updateProfile(values.username);
   }
   // ...
 
-  function getTimeZone() {
-    var offset = new Date().getTimezoneOffset(), o = Math.abs(offset);
-    return (offset < 0 ? "+" : "-") + ("00" + Math.floor(o / 60)).slice(-2) + ":" + ("00" + (o % 60)).slice(-2);
-}
-
-console.log(getTimeZone())
-
   type user = Database["public"]["Tables"]["profiles"]["Row"];
 
-  const user: any = data.session.user.user_metadata;
+  const user = session.user.user_metadata;
+
+  console.log(user)
 
   return (
     <Form {...form}>
@@ -150,10 +176,7 @@ console.log(getTimeZone())
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Timezone</FormLabel>
-              <Popover open={open} onOpenChange={setOpen}
-              
-              
-              >
+              <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
@@ -174,20 +197,15 @@ console.log(getTimeZone())
                   </FormControl>
                 </PopoverTrigger>
                 <PopoverContent className="w-full h-[200px] p-0">
-        
-                    <Command
-                    defaultValue={'Europe/Dublin'}
-                    value={'Europe/Dublin'}
+                  <Command
+                    defaultValue={"Europe/Dublin"}
+                    value={"Europe/Dublin"}
+                  >
+                    <CommandInput placeholder="Search timezones..." />
 
-                    
-                    >
-                      <CommandInput placeholder="Search timezones..." />
-
-                      <ScrollArea className="h-full w-full rounded-md border">
+                    <ScrollArea className="h-full w-full rounded-md border">
                       <CommandEmpty>No timezone found.</CommandEmpty>
-                      <CommandGroup
-                      
-                      >
+                      <CommandGroup>
                         {TimezonesData.map((timezone: Timezone) => (
                           <CommandItem
                             value={timezone.value}
@@ -209,9 +227,8 @@ console.log(getTimeZone())
                           </CommandItem>
                         ))}
                       </CommandGroup>
-                  </ScrollArea>
-
-                    </Command>
+                    </ScrollArea>
+                  </Command>
                 </PopoverContent>
               </Popover>
               <FormDescription>
@@ -222,7 +239,7 @@ console.log(getTimeZone())
             </FormItem>
           )}
         />
-        <Button type="submit">Update</Button>
+        <Button type="submit">{loading ? "Update" : "please wait"}</Button>
       </form>
     </Form>
   );
