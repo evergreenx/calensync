@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { UpdateProfileForm } from "./updateProfileForm";
 import { Database } from "@/lib/database.types";
-import  type { Session } from "@supabase/auth-helpers-nextjs";
+import  { Session } from "@supabase/auth-helpers-nextjs";
 
 
 interface ModalType {
@@ -31,7 +31,7 @@ export function UpdateProfileModal({ openState , session }: ModalType) {
           <AlertDialogTitle>Update your profile?</AlertDialogTitle>
         </AlertDialogHeader>
 
-        <UpdateProfileForm session={session} />
+        <UpdateProfileForm setOpenModal={setOpen} session={session} />
         {/* <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction>Continue</AlertDialogAction>

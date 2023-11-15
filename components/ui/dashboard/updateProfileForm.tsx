@@ -59,7 +59,7 @@ const formSchema = z.object({
   }),
 });
 
-export function UpdateProfileForm({ session }: { session: Session }) {
+export function UpdateProfileForm({ session , setOpenModal }: { session: Session | null , setOpenModal:any }) {
   // ge user timezone
   const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -79,25 +79,36 @@ export function UpdateProfileForm({ session }: { session: Session }) {
 
   const [open, setOpen] = React.useState(false);
 
-  async function updateProfile( username : any) {
+  const sessionData: any = session?.user;
+
+  async function updateProfile(username: any, timezone: string, name: string) {
     try {
       setLoading(true);
 
-      const { error } = await supabase.from("profiles").update({
-        id: session.user.id,
-        username,
-        name: "",
-        is_new_user: false,
-        timezone: "",
-      }).eq('id' , session.user.id);
+      const { error } = await supabase
+        .from("profiles")
+        .update({
+          id: session?.user.id,
+          username,
+          name: name,
+          is_new_user: false,
+          timezone: timezone,
+        })
+        .eq("id", sessionData.id);
       if (error) throw error;
       alert("Profile updated!");
     } catch (error) {
       // alert("Error updating the data!");
 
-      console.log(error)
+      console.log(error);
     } finally {
+
+      setOpenModal
       setLoading(false);
+
+      setOpenModal(false)
+
+
     }
   }
 
@@ -106,15 +117,13 @@ export function UpdateProfileForm({ session }: { session: Session }) {
     // ✅ This will be type-safe and validated.
     console.log(values);
 
-    updateProfile(values.username);
+    updateProfile(values.username, values.timezone, values.name);
   }
   // ...
 
   type user = Database["public"]["Tables"]["profiles"]["Row"];
 
-  const user = session.user.user_metadata;
-
-  console.log(user)
+  const user = session?.user.user_metadata;
 
   return (
     <Form {...form}>
