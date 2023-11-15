@@ -15,21 +15,21 @@ export interface Database {
           is_new_user: boolean | null
           name: string
           timezone: string | null
-          username: string | null
+          username: string
         }
         Insert: {
           id: string
           is_new_user?: boolean | null
           name: string
           timezone?: string | null
-          username?: string | null
+          username: string
         }
         Update: {
           id?: string
           is_new_user?: boolean | null
           name?: string
           timezone?: string | null
-          username?: string | null
+          username?: string
         }
         Relationships: [
           {
