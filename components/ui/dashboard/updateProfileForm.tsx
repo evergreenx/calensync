@@ -39,11 +39,10 @@ import {
 import { Check, ChevronsUpDown } from "lucide-react";
 
 import TimezonesData from "@/data/timezones.json";
-import { Timezone } from "@/index";
+import { Profiles, Timezone } from "@/global";
 import React from "react";
 import { ScrollArea } from "../scroll-area";
-
-// import { toast } from "@/components/ui/use-toast"
+import { toast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -59,7 +58,13 @@ const formSchema = z.object({
   }),
 });
 
-export function UpdateProfileForm({ session , setOpenModal }: { session: Session | null , setOpenModal:any }) {
+export function UpdateProfileForm({
+  session,
+  setOpenModal,
+}: {
+  session: Profiles;
+  setOpenModal: any;
+}) {
   // ge user timezone
   const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -70,45 +75,49 @@ export function UpdateProfileForm({ session , setOpenModal }: { session: Session
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      //   username: "",
-      //   name: ''
-
+      username: session.username,
+      name: session.name,
       timezone: userTimezone,
     },
   });
 
   const [open, setOpen] = React.useState(false);
 
-  const sessionData: any = session?.user;
-
-  async function updateProfile(username: any, timezone: string, name: string) {
+  async function updateProfile(
+    username: string,
+    timezone: string,
+    name: string
+  ) {
     try {
       setLoading(true);
 
       const { error } = await supabase
         .from("profiles")
         .update({
-          id: session?.user.id,
+          id: session?.id,
           username,
           name: name,
           is_new_user: false,
           timezone: timezone,
         })
-        .eq("id", sessionData.id);
+        .eq("id", session?.id);
       if (error) throw error;
-      alert("Profile updated!");
+      toast({
+        title: "profile updated",
+      });
     } catch (error) {
       // alert("Error updating the data!");
 
+      toast({
+        title: "Error updating the data",
+      });
+
       console.log(error);
     } finally {
-
-      setOpenModal
+      setOpenModal;
       setLoading(false);
 
-      setOpenModal(false)
-
-
+      setOpenModal(false);
     }
   }
 
@@ -123,7 +132,9 @@ export function UpdateProfileForm({ session , setOpenModal }: { session: Session
 
   type user = Database["public"]["Tables"]["profiles"]["Row"];
 
-  const user = session?.user.user_metadata;
+  const user = session;
+
+  console.log(session);
 
   return (
     <Form {...form}>
@@ -136,7 +147,7 @@ export function UpdateProfileForm({ session , setOpenModal }: { session: Session
               <FormLabel>Username</FormLabel>
 
               <FormControl>
-                <Input defaultValue={user?.user_name} {...field} />
+                <Input defaultValue={session?.username} {...field} />
               </FormControl>
               <FormDescription>
                 This is your public display name.
@@ -154,7 +165,7 @@ export function UpdateProfileForm({ session , setOpenModal }: { session: Session
               <FormLabel>Full name</FormLabel>
               <FormControl>
                 <Input
-                  defaultValue={user?.full_name}
+                  defaultValue={user?.name}
                   placeholder="full name"
                   {...field}
                 />
@@ -173,7 +184,7 @@ export function UpdateProfileForm({ session , setOpenModal }: { session: Session
           <input
             type="email"
             placeholder="email"
-            defaultValue={user?.email}
+            // defaultValue={user?.email}
             disabled
             className="flex mt-3 h-10 w-full rounded-md disabled:border disabled:border-input disabled:bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed "
           />

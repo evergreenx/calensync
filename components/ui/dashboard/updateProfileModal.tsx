@@ -14,15 +14,14 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { UpdateProfileForm } from "./updateProfileForm";
 import { Database } from "@/lib/database.types";
-import  { Session } from "@supabase/auth-helpers-nextjs";
-
+import { Profiles } from "@/global";
 
 interface ModalType {
   openState: boolean | never[];
-  session: Session | null
+  session: Profiles;
 }
 
-export function UpdateProfileModal({ openState , session }: ModalType) {
+export function UpdateProfileModal({ openState, session }: ModalType) {
   const [open, setOpen] = useState<any>(openState);
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
@@ -32,10 +31,7 @@ export function UpdateProfileModal({ openState , session }: ModalType) {
         </AlertDialogHeader>
 
         <UpdateProfileForm setOpenModal={setOpen} session={session} />
-        {/* <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction>Continue</AlertDialogAction>
-        </AlertDialogFooter> */}
+    
       </AlertDialogContent>
     </AlertDialog>
   );
