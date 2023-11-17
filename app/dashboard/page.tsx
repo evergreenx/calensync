@@ -1,8 +1,7 @@
 // "use client";
 
 import * as React from "react";
-import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
+
 
 import {
   createClientComponentClient,
@@ -16,11 +15,11 @@ export default async function Page() {
   const supabase = createServerComponentClient<Database>({ cookies });
   const { data } = await supabase.from("profiles").select();
 
-  const { data:userData} = await supabase.auth.getSession()
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
 
-  
-
-  const handleNewUser  = (profiles:any ) => {
+  const handleNewUser = (profiles: any) => {
     if (!profiles || !Array.isArray(profiles)) {
       // Handle the case where profiles is not available or not an array
       return [];
@@ -29,7 +28,7 @@ export default async function Page() {
     return profiles.some((profile) => profile && profile.is_new_user === true);
   };
 
-  console.log(handleNewUser(data));
+  console.log(data)
 
   return (
     <section className="my-20">
@@ -39,7 +38,7 @@ export default async function Page() {
       earum possimus.
       {handleNewUser(data) && (
         <UpdateProfileModal
-        data={userData}
+          session={session}
           openState={handleNewUser(data)}
         ></UpdateProfileModal>
       )}
