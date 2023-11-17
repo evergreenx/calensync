@@ -26,6 +26,8 @@ export default async function Page() {
     .eq("id", user?.user.id)
     .single();
 
+   
+
   return (
     <section className="my-20">
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt autem
